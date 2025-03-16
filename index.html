@@ -2,13 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Snake Game with Leaderboard</title>
     <style>
-        body { text-align: center; font-family: Arial, sans-serif; }
-        canvas { background: #000; display: block; margin: 0 auto; }
-        #leaderboard { margin-top: 20px; }
+        body { text-align: center; font-family: Arial, sans-serif; margin: 0; padding: 0; overflow: hidden; }
+        canvas { background: #000; display: block; margin: auto; touch-action: none; }
+        #leaderboard { margin-top: 20px; font-size: 18px; }
         ul { list-style: none; padding: 0; }
+        .controls { display: none; position: fixed; bottom: 10px; width: 100%; text-align: center; }
+        .controls button { padding: 10px; font-size: 20px; margin: 5px; }
+        @media (max-width: 600px) {
+            canvas { width: 100vw; height: 100vw; }
+            .controls { display: block; }
+        }
     </style>
 </head>
 <body>
@@ -16,6 +22,13 @@
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <h2>Leaderboard</h2>
     <ul id="leaderboard"></ul>
+    
+    <div class="controls">
+        <button onclick="changeDirectionManual('UP')">⬆️</button><br>
+        <button onclick="changeDirectionManual('LEFT')">⬅️</button>
+        <button onclick="changeDirectionManual('RIGHT')">➡️</button><br>
+        <button onclick="changeDirectionManual('DOWN')">⬇️</button>
+    </div>
     
     <script>
         const canvas = document.getElementById("gameCanvas");
@@ -65,6 +78,13 @@
             else if (key === 38 && direction !== "DOWN") direction = "UP";
             else if (key === 39 && direction !== "LEFT") direction = "RIGHT";
             else if (key === 40 && direction !== "UP") direction = "DOWN";
+        }
+
+        function changeDirectionManual(newDirection) {
+            if (newDirection === "LEFT" && direction !== "RIGHT") direction = "LEFT";
+            else if (newDirection === "UP" && direction !== "DOWN") direction = "UP";
+            else if (newDirection === "RIGHT" && direction !== "LEFT") direction = "RIGHT";
+            else if (newDirection === "DOWN" && direction !== "UP") direction = "DOWN";
         }
 
         function drawGame() {
