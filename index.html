@@ -39,6 +39,7 @@
         let direction = "RIGHT";
         let score = 0;
         let game;
+        let gameActive = true;
 
         document.addEventListener("keydown", changeDirection);
         canvas.addEventListener("touchstart", handleTouchStart, false);
@@ -88,6 +89,7 @@
         }
 
         function drawGame() {
+            if (!gameActive) return;
             ctx.fillStyle = "black";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = "red";
@@ -114,10 +116,11 @@
             const newHead = { x: headX, y: headY };
             
             if (headX < 0 || headY < 0 || headX >= canvas.width || headY >= canvas.height || collision(newHead, snake)) {
-                clearInterval(game);
                 updateLeaderboard(score);
-                alert("Game Over! Your score: " + score);
-                location.reload();
+                score = 0;
+                snake = [{ x: 10 * box, y: 10 * box }];
+                direction = "RIGHT";
+                food = { x: Math.floor(Math.random() * 20) * box, y: Math.floor(Math.random() * 20) * box };
             }
             
             snake.unshift(newHead);
